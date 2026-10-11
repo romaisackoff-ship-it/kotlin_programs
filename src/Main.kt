@@ -1,42 +1,55 @@
-val videogameslist = listOf("GTA6", "Roblix", "CS2", "Fortnite", "Metro2033")
-val ListUseGames = mutableListOf<String>()
-
-fun showMenu() {
-
-    println("Выбери игру из списка:")
-    println(videogameslist)
-    println("И напиши название:")
-
-}
-
-fun whatGamesUsePiopleFun(name: String): String = when {
-    name in videogameslist -> "ты выбрал $name"
-    else -> "Нет такой игры"
-}
-
 fun main() {
-    showMenu()
-    val howGames = readln()
+    println(describe(null))
+    println(describe(""))
+    println(describe("ку"))
 
-    println(whatGamesUsePiopleFun(howGames))
-    ListUseGames.add(howGames)
+    val inputs = listOf("42", null, "abc", " 7 ", "100")
+    for (input in inputs) {
+        val n = parseIntOrNull(input?.trim()) ?: 0
+        println("'$input' -> $n")
+    }
+    val raw = listOf("Иван", null, "Анна", "", "Пётр", null)
+    val name = raw.filterNotNull()
+    println(name)
 
-    println("Хочешь выбрать что-то ещё?")
+    val nonEmpty = raw.filterNotNull().filter { it.isNotEmpty() }
+    println(nonEmpty)
 
-    val answer = readln().lowercase()
+    val nullCount = raw.count { it == null }
+    println(nullCount)
 
-    if (answer == "да" || answer == "yes" || answer == "y") {
-
-        showMenu()
-        val howGames2 = readln()
-        println(whatGamesUsePiopleFun(howGames2))
-        ListUseGames.add(howGames2)
-
-        println("Щас у тебя в библиотеке:")
-        println(ListUseGames)
+    println(findGame(null))         // Ты ничего не ввёл
+    println(findGame("   "))        // Пустой ввод
+    println(findGame("GTA6"))       // Ты выбрал GTA6
+    println(findGame("  CS2  "))    // Ты выбрал CS2
+    println(findGame("Mario"))
 
 
+}
+
+
+fun describe(value: String?): String = when (value) {
+    null -> "пусто"
+    "" -> "Пустая строка"
+    else -> "строка длиной ${value.length}"
+}
+fun parseIntOrNull(s: String?): Int? = s?.toIntOrNull()
+
+fun findGame(name: String?): String {
+    val videogameslist = listOf("GTA6", "Roblix", "CS2", "Fortnite", "Metro2033")
+    val trimmed = name?.trim() ?: return "Ты ничего не ввёл"
+    return when {
+        trimmed.isEmpty() -> "Пустой ввод"
+        trimmed in videogameslist -> "Ты выбрал $trimmed"
+        else -> "Игры '$trimmed' нет в списке"
     }
 }
+
+
+
+
+
+
+
 
 
