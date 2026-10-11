@@ -1,48 +1,49 @@
 fun main() {
-    println(describe(null))
-    println(describe(""))
-    println(describe("ку"))
+    val name: String? = "иван"
+    name?.let { println(it.uppercase()) }
 
-    val inputs = listOf("42", null, "abc", " 7 ", "100")
-    for (input in inputs) {
-        val n = parseIntOrNull(input?.trim()) ?: 0
-        println("'$input' -> $n")
+    val number = "42".let { it.toInt() * 2 }
+
+    println(number)
+
+    data class User(
+        var name2: String = "",
+        var age: Int = 0
+    )
+
+    val use = User().apply {
+        name2 = "Иван"
+        age = 25
     }
-    val raw = listOf("Иван", null, "Анна", "", "Пётр", null)
-    val name = raw.filterNotNull()
-    println(name)
 
-    val nonEmpty = raw.filterNotNull().filter { it.isNotEmpty() }
-    println(nonEmpty)
+    val list = listOf(1, 2, 3, 4, 5)
+        .also { println("Исходный: $it") }
+        .filter { it % 2 == 0 }
+        .also { println("Чётные: $it") }
+        .map { it * 10 }
 
-    val nullCount = raw.count { it == null }
-    println(nullCount)
-
-    println(findGame(null))         // Ты ничего не ввёл
-    println(findGame("   "))        // Пустой ввод
-    println(findGame("GTA6"))       // Ты выбрал GTA6
-    println(findGame("  CS2  "))    // Ты выбрал CS2
-    println(findGame("Mario"))
-
-
-}
-
-
-fun describe(value: String?): String = when (value) {
-    null -> "пусто"
-    "" -> "Пустая строка"
-    else -> "строка длиной ${value.length}"
-}
-fun parseIntOrNull(s: String?): Int? = s?.toIntOrNull()
-
-fun findGame(name: String?): String {
-    val videogameslist = listOf("GTA6", "Roblix", "CS2", "Fortnite", "Metro2033")
-    val trimmed = name?.trim() ?: return "Ты ничего не ввёл"
-    return when {
-        trimmed.isEmpty() -> "Пустой ввод"
-        trimmed in videogameslist -> "Ты выбрал $trimmed"
-        else -> "Игры '$trimmed' нет в списке"
+    println("Результат: $list")
+    run {
+        val sum = (1..100).sum()
+        println(sum)
     }
+
+    val bulder = with(StringBuilder()) {
+        append("Привет, ")
+        append("мир!")
+        append(" Как дела?")
+    }
+    println(bulder)
+
+    val input: String? = null
+
+    input?.let {
+        println("Ввод: $input")
+    } ?: run {
+        println("Ничего не введено")
+    }
+
+
 }
 
 
