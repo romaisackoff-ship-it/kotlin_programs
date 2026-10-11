@@ -1,50 +1,59 @@
+data class User(val name: String, val age: Int)
+
+val users = listOf(
+    User("Иван", 25),
+    User("Пётр", 17),
+    User("Анна", 22),
+    User("Олег", 16),
+    User("Маша", 30)
+)
+
 fun main() {
-    val name: String? = "иван"
-    name?.let { println(it.uppercase()) }
 
-    val number = "42".let { it.toInt() * 2 }
+    taskOne()
+    taskTwo()
+    taskFreeAndFourAndFive()
+    taskSix()
+}
 
-    println(number)
+fun taskOne() {
+    val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    val chetni = list.filter { it % 2 == 0 }.map { it * 2 }
 
-    data class User(
-        var name2: String = "",
-        var age: Int = 0
-    )
+    println(chetni)
+}
 
-    val use = User().apply {
-        name2 = "Иван"
-        age = 25
-    }
+fun taskTwo() {
+    val list = listOf("1", "abc", "3", "xyz", "5", "10")
+    val valid = list.mapNotNull { it.toIntOrNull() }
+    println(valid)
+}
 
-    val list = listOf(1, 2, 3, 4, 5)
-        .also { println("Исходный: $it") }
-        .filter { it % 2 == 0 }
-        .also { println("Чётные: $it") }
-        .map { it * 10 }
+fun taskFreeAndFourAndFive() {
 
-    println("Результат: $list")
-    run {
-        val sum = (1..100).sum()
-        println(sum)
-    }
+    val sover = users.groupBy { users -> users.age >= 18 }
+    println(sover)
 
-    val bulder = with(StringBuilder()) {
-        append("Привет, ")
-        append("мир!")
-        append(" Как дела?")
-    }
-    println(bulder)
+    val (soxer, notsoxer) = users.partition { users -> users.age >= 18 }
+    println(soxer)
+    println(notsoxer)
 
-    val input: String? = null
 
-    input?.let {
-        println("Ввод: $input")
-    } ?: run {
-        println("Ничего не введено")
-    }
+    val byName = users.associateBy { it.name }
 
+    val anna = byName["Анна"]
+    println(anna)
 
 }
+
+fun taskSix() {
+    val age = users.sortedBy { it.age }
+
+    println(age)
+
+}
+
+
 
 
 
