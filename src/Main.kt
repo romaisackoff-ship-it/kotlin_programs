@@ -1,58 +1,34 @@
 
-fun <T> identity(x: T): T {
-    return x
+interface Producer<out T> {
+    fun produce(): T
 }
 
-fun <T> List<T>.myfirstOrNull(): T? {
-    return if (this.isEmpty()) null else this[0]
-
+class StringProducer : Producer<String> {
+    override fun produce(): String = "привет"
 }
 
-class Box<T>(val value: T)
-
-val intBox = Box(42)
-val strBox = Box("Привет")
-
-class MyPair<A, B>(val first: A, val second: B)
-
-val p = MyPair(1, "один")
-
-fun <T> List<T>.secondOrNull(): T? {
-    return if (this.size < 2) null else this[1]
+interface Consumer<in T> {
+    fun consume(item: T)
 }
 
-fun <T, R> List<T>.myMap(transform: (T) -> R): List<R> {
-    val result = mutableListOf<R>()
-    for (item in this) {
-        result.add(transform(item))
+class AnyConsumer : Consumer<Any> {
+    override fun consume(item: Any) { println(item) }
+}
+fun printAll(items: List<*>) {
+    for (item in items) {
+        println(item)
     }
-    return result
-
 }
-
-fun <T : Number> myMaxOf(a: T, b: T): T {
-    return if (a.toDouble() > b.toDouble()) a else b
-}
-
 
 fun main() {
-    println(identity(42))
-    println(identity("привет"))
-    println(identity(true))
+    val o: Producer<Any> = StringProducer()
 
-    println(listOf(1, 2, 3).myfirstOrNull())
-    println(listOf<Int>().myfirstOrNull())
+    println(o.produce())
 
-    println(intBox.value)
-    println(strBox.value)
+    val c: Consumer<String> = AnyConsumer()   // ✅ должно работать
+    c.consume("привет")
 
-    println(p.first)
-    println(p.second)
-
-    println(listOf(1, 2, 3).secondOrNull())
-    println(listOf(1).secondOrNull())
-
-    println(listOf(1, 2, 3).myMap { it * 2 })
-
-    println(myMaxOf(1, 4))
+    printAll(listOf("a", "b"))
+    printAll(listOf(1, 2, 3))
+    printAll(listOf(true, false))
 }
